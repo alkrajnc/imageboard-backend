@@ -1,0 +1,39 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn add express
+
+PATH: 
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/dotnet/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/starship/bin/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Users/overlord/AppData/Local/Programs/Python/Python310:/mnt/c/Users/overlord/AppData/Local/Programs/Python/Python310/Lib:/mnt/c/TDM-GCC-64/bin:/mnt/c/Users/overlord/AppData/Roaming/npm:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/overlord/AppData/Local/Programs/Python/Python310/Scripts/:/mnt/c/Users/overlord/AppData/Local/Programs/Python/Python310/:/mnt/c/Users/overlord/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/overlord/AppData/Local/Programs/oh-my-posh/bin:/mnt/c/Users/overlord/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/JetBrains/PyCharm 2022.3.2/bin:/mnt/c/Users/overlord/AppData/Local/JetBrains/Toolbox/scripts:/mnt/c/Users/overlord/arduino-cli:/snap/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.16.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/dev/social-backend/package.json: Unexpected string in JSON at position 164
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "social-backend",
+    "version": "1.0.0",
+    "description": "Backend for a imageboard",
+    "main": "index.js",
+    "author": "alkrajnc",
+    "license": "MIT"
+    "type": "module",
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
