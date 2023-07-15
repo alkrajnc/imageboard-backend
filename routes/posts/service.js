@@ -1,16 +1,10 @@
-import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
-const uri =
-  "mongodb+srv://megalodon4k:geslo-database-mongo@cluster0.bnld4xm.mongodb.net/?retryWrites=true&w=majority";
-
-const client = new MongoClient(uri);
-await client.connect();
-
-const mainDb = client.db("social");
-const postsCollections = mainDb.collection("posts");
-
+import { ObjectId } from "mongodb";
+import db from "../../config.js";
+const posts = db.collection("posts");
+const comments = db.collection("comments");
 export const getAllPosts = async (sort) => {
   //console.log(sort);
-  const result = postsCollections.find();
+  const result = posts.find();
   if (sort === "latest") {
     result.sort({ postTimestamp: -1 });
     if (result) {
@@ -50,7 +44,7 @@ export const createNewPost = async (postData, image) => {
     postImage: `${image.destination.replace("./", "")}/${image.filename}`,
   };
   console.log(doc);
-  const result = await postsCollections.insertOne(doc);
+  const result = await posts.insertOne(doc);
 };
 export const changeVote = async (postId, operation) => {
   const filter = { _id: new ObjectId(postId) };
@@ -58,7 +52,7 @@ export const changeVote = async (postId, operation) => {
     const updateDoc = {
       $inc: { postVotes: 1 },
     };
-    const result = await postsCollections.updateOne(filter, updateDoc);
+    const result = await posts.updateOne(filter, updateDoc);
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
@@ -66,26 +60,19 @@ export const changeVote = async (postId, operation) => {
     const updateDoc = {
       $inc: { postVotes: -1 },
     };
-    const result = await postsCollections.updateOne(filter, updateDoc);
+    const result = await posts.updateOne(filter, updateDoc);
   }
-  const result = await postsCollections.findOne(filter);
+  const result = await posts.findOne(filter);
   if (result.postVotes < -10) {
-    const deleteResult = await postsCollections.deleteOne(filter);
+    const deleteResult = await posts.deleteOne(filter);
   }
 };
 export const deleteall = async () => {
-  const result = await postsCollections.deleteMany({});
+  const result = await posts.deleteMany({});
 };
 export const addComment = async (postId, comment) => {
-  const filter = { _id: new ObjectId(postId) };
-  comment._id = new ObjectId();
-  const updateDoc = {
-    $push: { postComments: comment },
-  };
-  const result = await postsCollections.updateOne(filter, updateDoc);
-  console.log(
-    `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
-  );
+  comment.postId = postId;
+  const result = comments.insertOne(comment);
 };
 export const changeCommentVote = async (postId, commentId, operation) => {
   const filter = { _id: new ObjectId(postId) };
@@ -93,7 +80,7 @@ export const changeCommentVote = async (postId, commentId, operation) => {
     const updateDoc = {
       $inc: { [`postComments[${commentId}]`]: 1 },
     };
-    const result = await postsCollections.updateOne(filter, updateDoc);
+    const result = await posts.updateOne(filter, updateDoc);
     console.log(result);
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
@@ -102,10 +89,23 @@ export const changeCommentVote = async (postId, commentId, operation) => {
     const updateDoc = {
       $inc: { postVotes: -1 },
     };
-    const result = await postsCollections.updateOne(filter, updateDoc);
+    const result = await posts.updateOne(filter, updateDoc);
   }
-  const result = await postsCollections.findOne(filter);
+  const result = await posts.findOne(filter);
   if (result.postVotes < -10) {
-    const deleteResult = await postsCollections.deleteOne(filter);
+    const deleteResult = await posts.deleteOne(filter);
   }
+};
+export const getCommentsOnPost = async (postId) => {
+  const filter = { postId: postId };
+  const results = comments.find(filter);
+  let docs = [];
+  for await (const doc of results) {
+    docs.push(doc);
+  }
+  return docs;
+};
+export const getPost = async (postId) => {
+  const result = await posts.findOne({ _id: new ObjectId(postId) });
+  return result;
 };

@@ -8,6 +8,8 @@ import {
   changeVote,
   addComment,
   changeCommentVote,
+  getCommentsOnPost,
+  getPost,
 } from "./service.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -30,6 +32,12 @@ const upload = multer({ storage: storage });
 
 posts.get("/query", async (req, res, next) => {
   res.json(await getAllPosts(req.query.sort));
+});
+posts.get("/query/:postId", async (req, res, next) => {
+  res.json(await getPost(req.params.postId));
+});
+posts.get("/comments/:postId", async (req, res, next) => {
+  res.json(await getCommentsOnPost(req.params.postId));
 });
 posts.put("/modify/:postId/changeVote", async (req, res, next) => {
   res.json(await changeVote(req.params.postId, req.query.action));
