@@ -7,6 +7,7 @@ import {
   getAllPosts,
   changeVote,
   addComment,
+  changeCommentVote,
 } from "./service.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -37,8 +38,14 @@ posts.put("/modify/:postId/changeVote", async (req, res, next) => {
 posts.post("/:postId/comments/add", async (req, res, next) => {
   res.json(addComment(req.params.postId, req.body));
 });
-posts.put("/:postId/comments/changeVote", async (req, res, next) => {
-  res.json(await changeCommentVote(req.params.postId, req.query.action));
+posts.put("/:postId/comments/:commentId/changeVote", async (req, res, next) => {
+  res.json(
+    await changeCommentVote(
+      req.params.postId,
+      req.params.commentId,
+      req.query.action
+    )
+  );
 });
 
 posts.post("/create", upload.single("postImage"), async (req, res, next) => {

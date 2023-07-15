@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
-const uri =
-  "mongodb+srv://megalodon4k:geslo-database-mongo@cluster0.bnld4xm.mongodb.net/?retryWrites=true&w=majority";
+import "dotenv/config";
+const uri = process.env.URI;
 
 const client = new MongoClient(uri);
 await client.connect();

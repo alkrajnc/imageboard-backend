@@ -78,6 +78,7 @@ export const deleteall = async () => {
 };
 export const addComment = async (postId, comment) => {
   const filter = { _id: new ObjectId(postId) };
+  comment._id = new ObjectId();
   const updateDoc = {
     $push: { postComments: comment },
   };
@@ -86,6 +87,25 @@ export const addComment = async (postId, comment) => {
     `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
   );
 };
-export const changeCommentVote = (postId, operation) => {
-  body;
+export const changeCommentVote = async (postId, commentId, operation) => {
+  const filter = { _id: new ObjectId(postId) };
+  if (operation === "plus") {
+    const updateDoc = {
+      $inc: { [`postComments[${commentId}]`]: 1 },
+    };
+    const result = await postsCollections.updateOne(filter, updateDoc);
+    console.log(result);
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
+    );
+  } else {
+    const updateDoc = {
+      $inc: { postVotes: -1 },
+    };
+    const result = await postsCollections.updateOne(filter, updateDoc);
+  }
+  const result = await postsCollections.findOne(filter);
+  if (result.postVotes < -10) {
+    const deleteResult = await postsCollections.deleteOne(filter);
+  }
 };
