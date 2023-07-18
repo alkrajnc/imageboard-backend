@@ -6,7 +6,7 @@ const posts = db.collection("posts");
 const comments = db.collection("comments");
 export async function getUserData(username) {
   const result = await users.findOne({ username: username }, { username: 1 });
-  const userPosts = await posts.find({ postAuthor: username });
+  const userPosts = posts.find({ postAuthor: username });
   delete result.password;
   delete result.jwt;
   let userCreatedPosts = [];
@@ -21,7 +21,6 @@ export async function getUserData(username) {
     posts: userCreatedPosts,
     country: result.country,
   };
-
   return userData;
 }
 export const getUserComments = async (username) => {

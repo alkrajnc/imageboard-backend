@@ -7,6 +7,8 @@ const port = 3000;
 import posts from "./routes/posts/route.js";
 import auth from "./routes/auth/route.js";
 import user from "./routes/user/route.js";
+import boards from "./routes/boards/route.js";
+
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -27,6 +29,8 @@ app.use("/storage", express.static("storage"));
 app.use("/api/posts", posts);
 app.use("/api/auth", auth);
 app.use("/api/user", user);
+app.use("/api/boards", boards);
+
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   console.error(err.message, err.stack);

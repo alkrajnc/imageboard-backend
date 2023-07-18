@@ -15,7 +15,6 @@ function compareHash(hash, password) {
   return bcrypt.compareSync(password, hash);
 }
 export function generateAccessToken(username) {
-  //console.log(process.env.TOKEN_SECRET);
   return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "7d" });
 }
 
@@ -29,9 +28,7 @@ export function authenticateToken(req, res, next) {
     (err, user) => {
       //console.log(err);
       if (err) return res.sendStatus(403);
-
       req.user = user;
-
       next();
     }
   );
